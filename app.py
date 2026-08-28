@@ -3,6 +3,9 @@ import os
 from flask import Flask, render_template
 from data_manager import DataManager
 from models import db
+from dotenv import load_dotenv
+
+load_dotenv()
 
 app = Flask(__name__)
 
@@ -32,6 +35,22 @@ def list_users():
     # Temporarily returning user names as a string
     return str([user.name for user in users])
     # return str(users)  # Temporarily returning users as a string
+
+
+@app.route('/users/<int:user_id>/movies', methods=['GET'])
+def list_movies(user_id):
+    """will return a list of all movies for a specific user, GET"""
+
+
+@app.route('/users/<int:user_id>/movies', methods=['POST'])
+def add_movie(user_id):
+    """will add a new movie for a specific user, POST"""
+    # good place to use the omdB API to get movie details based on the title provided in the request
+
+
+@app.route('/users/<int:user_id>/movies/<int:movie_id>/delete', methods=['POST'])
+def delete_movie(user_id, movie_id):
+    """will delete a specific movie for a specific user, PUT"""
 
 
 if __name__ == '__main__':
