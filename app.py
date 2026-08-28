@@ -18,13 +18,13 @@ data_manager = DataManager()  # Create an object of your DataManager class
 
 @app.route('/')
 def home():
-    """Render the home page with a list of users"""
+    """show a list of all registered users and a form for adding new users, GET"""
     return render_template('home.html')
 
 
-@app.route('/users')
+@app.route('/users', methods=['POST'])
 def list_users():
-    """List all users in the database"""
+    """Adds a new user to the database and returns back to the home page, POST"""
     users = data_manager.get_users()
     # Debugging: print users to the console
     print([user.name for user in users])
