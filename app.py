@@ -40,13 +40,10 @@ def create_user():
 def list_movies(user_id):
     """will return a list of all movies for a specific user, GET"""
     # Get all movies for the specified user from the database using the DataManager class
+    user = data_manager.get_user(user_id)
+    if not user:
+        return render_template('404.html'), 404
     movies = data_manager.get_movies(user_id)
-    user = None
-    for us in data_manager.get_users():
-        if us.id == user_id:
-            user = us
-            break
-
     return render_template('movies.html', movies=movies, user_id=user_id, user=user)
 
 
@@ -55,6 +52,9 @@ def add_movie(user_id):
     """will add a new movie for a specific user, POST"""
     title = request.form.get('title')
     movie_data = data_manager.fetch_movie_details(title)
+    if not movie_data:
+        return render_template('404.html'), 404
+
     new_movie = Movie(
         name=movie_data.get('Title'),
         director=movie_data.get('Director'),
@@ -80,6 +80,19 @@ def delete_movie(user_id, movie_id):
     """will delete a specific movie for a specific user, POST"""
     data_manager.delete_movie(user_id, movie_id)
     return redirect(f'/users/{user_id}/movies')
+
+
+# error handling
+@app.errorhandler(404)
+def page_not_found(_):
+    """Render a custom 404 error page"""
+    return render_template('404.html'), 404
+
+
+@app.errorhandler(500)
+def internal_server_error(_):
+    """Render a custom 500 error page"""
+    return render_template('500.html'), 500
 
 
 if __name__ == '__main__':
