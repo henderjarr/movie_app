@@ -7,8 +7,14 @@
         <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     </head>
     <body>
+        <header>
+            <h1>Movie App</h1>
+        </header>
         <main class="container">
                 {% block content %}{% endblock %}
         </main>
+        <footer>
+            <p>&copy; 2024 My Movie App</p>
+        </footer>
     </body>
 </html>

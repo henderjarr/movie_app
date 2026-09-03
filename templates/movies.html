@@ -1,33 +1,31 @@
 {% extends "base.html" %}
 {% block content %}
-    <h1>Movies for {{ user.name }}</h1>
-    <ul>
+    <div class="user-label">
+        <h1>Movies for {{ user.name }}</h1>
+        <a href="{{ url_for('home') }}" class="btn">Back to Users</a>
+    </div>  
+    <div class="card-container">
         {% for movie in movies %}
-            <li>
-                <h2>{{ movie.name }}</h2>
-                <form action="{{url_for('update_movie', user_id=user.id, movie_id=movie.id)}}" method="post">
+            <div class="movie-card">
+                <div class="movie-name">{{ movie.name }}</div>
+                <img src="{{ movie.poster_url }}" alt="{{ movie.name }} poster" >
+                <form action="{{url_for('update_movie', user_id=user.id, movie_id=movie.id)}}" method="post" class="update-form">
                     <input type="text" name="new_title" placeholder="Enter new title" required>
                     <button type="submit">Update Title</button>
                 </form>
-                <img src="{{ movie.poster_url }}" alt="{{ movie.name }} poster" width="200">
-                <p>Director: {{ movie.director }}</p>
-                <p>Year: {{ movie.year }}</p>
-            </li>
-            <br>
-            <!-- delete movie form -->
-            <form action="{{ url_for('delete_movie', user_id=user.id, movie_id=movie.id) }}" method="post">
-                <button type="submit">Delete Movie</button>
-            </form>
+                <div class="movie-director">Director: {{ movie.director }}</div>
+                <div class="movie-year">Year: {{ movie.year }}</div>
+                <form action="{{ url_for('delete_movie', user_id=user.id, movie_id=movie.id) }}" method="post" class="delete-form">
+                    <button type="submit" class="btn delete">Delete Movie</button>
+                </form>
+            </div>
         {% endfor %}
-    </ul>
-    <br>
-    <br>
-    <a href="{{ url_for('home') }}" class="btn">Back to Users</a>
-    <br>
-    <br>
-    <form action="{{ url_for('add_movie', user_id=user.id) }}" method="post">
-        <label for="title">Add New Movie:</label>
-        <input type="text" name="title" placeholder="Enter a movie title" required>
-        <button type="submit" class="btn">Add Movie</button>
-    </form>
+    </div>
+    <div class="add-form">
+        <form action="{{ url_for('add_movie', user_id=user.id) }}" method="post" >
+            <label for="title">Add New Movie:</label>
+            <input type="text" name="title" placeholder="Enter a movie title" required>
+            <button type="submit" class="btn">Add Movie</button>
+        </form>
+    </div>
 {% endblock %}
